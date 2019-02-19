@@ -1,0 +1,14 @@
+# Virtual Environment Folders
+venv
+env
+
+# Cache files and folders
+__pycache__
+.DS_Store
+
+#Output files from script
+forecast.txt
+voicerss.mp3
+
+# IDE folders
+.vscode

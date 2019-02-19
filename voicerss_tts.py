@@ -1,4 +1,7 @@
-import httplib, urllib
+
+# Modified from original to work wtih Python 3
+import http.client
+import urllib
 
 def speech(settings):
 	__validate(settings)
@@ -14,12 +17,12 @@ def __request(settings):
 	result = {'error': None, 'response': None}
 
 	headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-	params = urllib.urlencode(__buildRequest(settings))
+	params = urllib.parse.urlencode(__buildRequest(settings))
 	
 	if 'ssl' in settings and settings['ssl']:
-		conn = httplib.HTTPSConnection('api.voicerss.org:443')
+		conn = http.client.HTTPSConnection('api.voicerss.org:443')
 	else:
-		conn = httplib.HTTPConnection('api.voicerss.org:80')
+		conn = http.client.HTTPConnection('api.voicerss.org:80')
 		
 	conn.request('POST', '/', params, headers)
 	
@@ -28,14 +31,14 @@ def __request(settings):
 	
 	if response.status != 200:
 		result['error'] = response.reason
-	elif content.find('ERROR') == 0:
-		result['error'] = content
 	else:
 		result['response'] = content
 		
 	conn.close()
 
 	return result
+
+	
 
 def __buildRequest(settings):
 	params = {'key': '', 'src': '', 'hl': '', 'r': '', 'c': '', 'f': '', 'ssml': '', 'b64': ''}
